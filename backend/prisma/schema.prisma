@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  STAFF
+}
+
+// TURMA: pastas pedagógicas (menu "Pedagógico") — turmas e disciplinas
+// SECRETARIA: pastas administrativas (menu "Secretaria/Administração")
+enum FolderCategory {
+  TURMA
+  SECRETARIA
+}
+
+model User {
+  id           String     @id @default(uuid())
+  name         String
+  // Gerado automaticamente a partir do nome completo (primeiro nome +
+  // último sobrenome, CamelCase), com sufixo numérico em caso de repetição.
+  // É o identificador usado para login, no lugar de e-mail.
+  username     String     @unique
+  passwordHash String
+  role         Role       @default(TEACHER)
+  active       Boolean    @default(true)
+  // Marcado quando a pessoa usa "Esqueci minha senha" — fica visível para
+  // quem gerencia usuários até que a senha seja redefinida.
+  passwordResetRequested Boolean @default(false)
+  // Chave do objeto no MinIO/S3 da foto de perfil (nulo = sem foto ainda).
+  avatarKey    String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  documents    Document[]
+  folders      Folder[]
+  auditLogs    AuditLog[]
+}
+
+model Folder {
+  id        String         @id @default(uuid())
+  name      String
+  category  FolderCategory
+
+  // Árvore de pastas: pasta raiz (Turma/Pasta de Secretaria) tem parentId nulo;
+  // subpastas (disciplinas etc.) apontam para a pasta pai.
+  parentId  String?
+  parent    Folder?        @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children  Folder[]       @relation("FolderTree")
+
+  creatorId   String
+  creator     User    @relation(fields: [creatorId], references: [id])
+  // Papel do criador no momento da criação — usado para aplicar as regras de
+  // visibilidade de forma estável, mesmo que o papel do usuário mude depois.
+  creatorRole Role
+
+  // Visibilidade: controla se usuários com o papel TEACHER/STAFF que não
+  // criaram a pasta conseguem vê-la. ADMIN sempre vê tudo. O criador sempre
+  // vê a própria pasta. Regras de quem pode escolher cada flag ficam na API.
+  visibleToTeachers Boolean @default(true)
+  visibleToStaff    Boolean @default(true)
+
+  documents Document[]
+  createdAt DateTime   @default(now())
+
+  @@index([parentId])
+  @@index([category])
+}
+
+model Document {
+  id           String    @id @default(uuid())
+  name         String
+  originalName String
+  mimeType     String
+  sizeBytes    Int
+  storageKey   String    @unique
+  folderId     String
+  ownerId      String
+  // Papel do dono no momento do upload — usado para aplicar a regra de
+  // "renomear: dono ou hierarquia superior" de forma estável.
+  ownerRole    Role
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  folder       Folder    @relation(fields: [folderId], references: [id])
+  owner        User      @relation(fields: [ownerId], references: [id])
+
+  @@index([folderId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  action    String
+  entity    String
+  entityId  String?
+  userId    String?
+  metadata  Json?
+  ip        String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+}

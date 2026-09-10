@@ -1,0 +1,28 @@
+# Dependências
+node_modules/
+backend/node_modules/
+
+# Variáveis de ambiente (contém segredos — nunca versionar)
+.env
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Atalhos e arquivos específicos de uma máquina local
+*.url
+*.lnk
+
+# Editores/IDEs
+.vscode/
+.idea/
+
+# Build/cache diversos
+*.tmp
+*.cache

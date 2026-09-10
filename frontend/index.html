@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>E-Pasesc · Pasta Escolar Eletrônica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       Landing page — ponto de entrada, com login e cadastro
+  ========================================================================== -->
+  <div id="landingScreen" class="landing-screen" hidden>
+    <div class="landing-inner">
+      <div class="landing-copy">
+        <div class="brand">
+          <span class="brand-badge">🎒</span>
+          <div>
+            <h1>E-Pasesc</h1>
+            <p>Pasta escolar eletrônica</p>
+          </div>
+        </div>
+        <h2 class="landing-headline">Os arquivos da sua escola, organizados e seguros.</h2>
+        <p class="landing-sub">
+          Pastas do Pedagógico (turmas e disciplinas) e da Secretaria em um só
+          lugar — com controle de quem pode ver cada uma e tudo registrado em
+          log.
+        </p>
+        <div class="landing-actions">
+          <button class="btn btn-primary btn-lg" onclick="goToAuth('login')">Entrar</button>
+          <button class="btn btn-secondary btn-lg" onclick="goToAuth('register')">Cadastrar usuário</button>
+        </div>
+        <ul class="landing-features">
+          <li>🗂️ Pastas do Pedagógico e da Secretaria</li>
+          <li>👀 Visibilidade configurável por perfil</li>
+          <li>✅ Novos acessos aprovados pela escola</li>
+        </ul>
+      </div>
+      <div class="landing-media">
+        <img
+          src="https://images.unsplash.com/photo-1780844824413-ccb03d294ec9?auto=format&fit=crop&w=1200&q=80"
+          alt="Sala de aula com crianças aprendendo"
+          loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Tela de Autenticação (Login / Cadastro de usuário)
+  ========================================================================== -->
+  <div id="authScreen" class="auth-screen" hidden>
+    <div class="auth-card">
+      <button type="button" class="back-link" onclick="showLanding()">← Voltar</button>
+      <div class="brand">
+        <span class="brand-badge">🎒</span>
+        <div>
+          <h1>E-Pasesc</h1>
+          <p>Pasta escolar eletrônica</p>
+        </div>
+      </div>
+
+      <div class="tabs" id="authTabs" hidden>
+        <button class="tab-btn active" data-tab="login">Entrar</button>
+        <button class="tab-btn" data-tab="register">Cadastrar usuário</button>
+      </div>
+
+      <form id="loginForm" class="auth-form" onsubmit="return false;">
+        <label>Nome de usuário
+          <input id="loginUsername" type="text" required placeholder="Ex: MariaPereira" autocomplete="username">
+        </label>
+        <label>Senha
+          <div class="password-field">
+            <input id="loginPassword" type="password" required placeholder="••••••••" autocomplete="current-password">
+            <button type="button" class="eye-btn" onclick="togglePassword('loginPassword', this)" aria-label="Mostrar senha">👁️</button>
+          </div>
+        </label>
+        <button type="submit" class="btn btn-primary" onclick="handleLogin()">Entrar</button>
+        <button type="button" class="link-btn" onclick="openForgotPasswordModal()">Esqueci minha senha</button>
+      </form>
+
+      <form id="registerForm" class="auth-form" hidden onsubmit="return false;">
+        <p id="registerHint" class="hint">Seu cadastro será analisado pela secretaria ou administração antes da liberação do acesso.</p>
+        <label>Nome completo
+          <input id="regName" type="text" required placeholder="Nome do responsável">
+        </label>
+        <label>Senha (mínimo 10 caracteres)
+          <div class="password-field">
+            <input id="regPassword" type="password" required minlength="10" placeholder="Crie uma senha forte" autocomplete="new-password">
+            <button type="button" class="eye-btn" onclick="togglePassword('regPassword', this)" aria-label="Mostrar senha">👁️</button>
+          </div>
+        </label>
+        <label>Confirmar senha
+          <div class="password-field">
+            <input id="regConfirmPassword" type="password" required minlength="10" placeholder="Digite a senha novamente" autocomplete="new-password">
+            <button type="button" class="eye-btn" onclick="togglePassword('regConfirmPassword', this)" aria-label="Mostrar senha">👁️</button>
+          </div>
+        </label>
+        <label id="regRoleWrap" hidden>Perfil de acesso
+          <select id="regRole">
+            <option value="TEACHER">Professor(a)</option>
+            <option value="STAFF">Secretaria</option>
+          </select>
+        </label>
+        <button type="submit" class="btn btn-primary" onclick="handleRegister()">Cadastrar</button>
+      </form>
+
+      <p id="authMsg" class="auth-msg"></p>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Aplicação principal
+  ========================================================================== -->
+  <div id="appScreen" class="app-screen" hidden>
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-badge">🎒</span>
+        <div>
+          <h1>E-Pasesc</h1>
+          <p>Gestão segura de arquivos escolares</p>
+        </div>
+      </div>
+      <div class="user-box">
+        <div class="user-info">
+          <span id="userName" class="user-name"></span>
+          <span id="userRole" class="badge"></span>
+        </div>
+
+        <button type="button" id="avatarBtn" class="avatar-btn" onclick="handleAvatarClick()" title="Trocar foto de perfil" aria-label="Trocar foto de perfil">
+          <img id="avatarImg" class="avatar-img" src="" alt="" hidden>
+          <span id="avatarPlaceholder" class="avatar-placeholder">🙂</span>
+          <span class="avatar-overlay">📷</span>
+        </button>
+        <input type="file" id="avatarFileInput" accept="image/png,image/jpeg,image/webp" hidden onchange="handleAvatarFileSelected(event)">
+
+        <button class="btn btn-ghost" onclick="handleLogout()">Sair</button>
+      </div>
+    </header>
+
+    <nav class="app-nav">
+      <button class="nav-btn active" data-view="documents">📄 Documentos</button>
+      <button class="nav-btn" data-view="turma">🏫 Pedagógico</button>
+      <button class="nav-btn" data-view="secretaria">🗃️ Secretaria / Administração</button>
+      <button class="nav-btn users-nav" data-view="users" hidden>👩‍🏫 Usuários</button>
+      <button class="nav-btn admin-only" data-view="logs" hidden>📋 Logs de atividade</button>
+    </nav>
+
+    <main class="app-main">
+
+      <!-- =====================================================================
+           Documentos (busca global entre tudo que o usuário pode acessar)
+      ====================================================================== -->
+      <section id="view-documents" class="view active">
+        <div class="view-header">
+          <h2>Documentos</h2>
+          <input id="search" class="field-lg" placeholder="🔎 Buscar por nome do arquivo" oninput="loadDocuments()">
+        </div>
+        <div class="filter-row">
+          <label>Filtrar por pasta
+            <select id="filterFolder" onchange="loadDocuments()">
+              <option value="">Todas as pastas acessíveis</option>
+            </select>
+          </label>
+        </div>
+        <p class="hint">Para enviar um arquivo, abra a pasta desejada em Pedagógico ou Secretaria/Administração.</p>
+        <div id="docsList" class="list"></div>
+      </section>
+
+      <!-- =====================================================================
+           Navegador de pastas: reaproveitado para Pedagógico e Secretaria/Admin
+      ====================================================================== -->
+      <section id="view-browser" class="view">
+        <div class="view-header">
+          <h2 id="browserTitle">Pedagógico</h2>
+          <button id="rootCreateBtn" class="btn btn-primary" onclick="openCreateRootFolderModal()" hidden>➕ Nova pasta</button>
+        </div>
+
+        <div class="browser-crumb-row">
+          <nav id="breadcrumb" class="breadcrumb"></nav>
+          <button id="editFolderBtn" class="btn btn-ghost btn-sm" onclick="openEditFolderModal(browserFolderData.folder)" title="Renomear ou alterar visibilidade desta pasta" hidden>✏️ Editar pasta</button>
+        </div>
+
+        <div class="browser-toolbar">
+          <input id="folderSearch" class="field-lg" placeholder="🔎 Buscar pasta ou arquivo aqui" oninput="filterFolderView()">
+          <button id="zipBtn" class="btn btn-secondary" onclick="handleDownloadZip(browserFolderId)" hidden>⬇️ Baixar tudo (.zip)</button>
+        </div>
+
+        <div id="folderSubsectionHeader" class="section-header-row" hidden>
+          <h3>Subpastas</h3>
+          <button id="createSubfolderBtn" class="btn btn-secondary btn-sm" onclick="openCreateSubfolderModal()" hidden>➕ Criar subpasta</button>
+        </div>
+        <div id="browserFolders" class="list"></div>
+
+        <div id="folderDocsHeader" hidden>
+          <hr>
+          <div class="section-header-row">
+            <h3>Arquivos nesta pasta</h3>
+            <button id="uploadBtn" class="btn btn-primary btn-sm" onclick="openUploadModal()">➕ Adicionar arquivo</button>
+          </div>
+        </div>
+        <div id="browserDocs" class="list"></div>
+
+        <div id="browserRootList" class="list"></div>
+      </section>
+
+      <!-- Usuários -->
+      <section id="view-users" class="view">
+        <div class="view-header">
+          <h2>Usuários</h2>
+        </div>
+        <p class="hint">Todo usuário cadastrado fica pendente até ser aprovado por alguém da secretaria ou administração.</p>
+        <div id="usersList" class="list"></div>
+        <hr>
+        <h3>Cadastrar novo usuário</h3>
+        <div class="form-row">
+          <input id="newUserName" class="field-lg" placeholder="Nome completo">
+          <div class="password-field password-field-inline">
+            <input id="newUserPassword" type="password" placeholder="Senha (mín. 10 caracteres)" minlength="10" autocomplete="new-password">
+            <button type="button" class="eye-btn" onclick="togglePassword('newUserPassword', this)" aria-label="Mostrar senha">👁️</button>
+          </div>
+          <div class="password-field password-field-inline">
+            <input id="newUserConfirmPassword" type="password" placeholder="Confirmar senha" minlength="10" autocomplete="new-password">
+            <button type="button" class="eye-btn" onclick="togglePassword('newUserConfirmPassword', this)" aria-label="Mostrar senha">👁️</button>
+          </div>
+          <select id="newUserRole">
+            <option value="TEACHER">Professor(a)</option>
+            <option value="STAFF">Secretaria</option>
+            <option value="ADMIN">Administrador(a)</option>
+          </select>
+          <button class="btn btn-primary" onclick="handleCreateUser()">Cadastrar</button>
+        </div>
+      </section>
+
+      <!-- Logs -->
+      <section id="view-logs" class="view">
+        <div class="view-header">
+          <h2>Logs de atividade</h2>
+          <div class="log-export">
+            <button class="btn btn-secondary" onclick="handleExportLogs('csv')">⬇️ Baixar CSV</button>
+            <button class="btn btn-secondary" onclick="handleExportLogs('xlsx')">⬇️ Baixar XLSX</button>
+          </div>
+        </div>
+
+        <div class="log-filters">
+          <select id="logFilterAction" onchange="loadAuditLogs()">
+            <option value="">Todas as atividades</option>
+          </select>
+          <input id="logFilterFrom" type="date" onchange="loadAuditLogs()">
+          <input id="logFilterTo" type="date" onchange="loadAuditLogs()">
+          <input id="logFilterSearch" class="field-lg" placeholder="🔎 Buscar por usuário, pasta, arquivo..." oninput="debouncedLoadAuditLogs()">
+          <button class="btn btn-ghost" onclick="handleClearLogFilters()">Limpar filtros</button>
+        </div>
+
+        <div id="logsList" class="list log-list"></div>
+      </section>
+
+    </main>
+
+    <p id="appMsg" class="app-msg"></p>
+  </div>
+
+  <!-- =========================================================================
+       Modal genérico: usado para criar/editar pasta, criar subpasta e enviar
+       arquivo — sem sair da tela atual.
+  ========================================================================== -->
+  <div id="modalOverlay" class="modal-overlay" hidden onclick="if(event.target===this) closeModal()">
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <button type="button" class="modal-close" onclick="closeModal()" aria-label="Fechar">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

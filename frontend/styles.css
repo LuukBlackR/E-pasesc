@@ -1,0 +1,463 @@
+:root{
+  --green-900:#1b4332;
+  --green-700:#2d6a4f;
+  --green-600:#40916c;
+  --green-500:#52b788;
+  --green-100:#d8f3dc;
+  --yellow-600:#f9a825;
+  --yellow-500:#fdd835;
+  --yellow-200:#fff3b0;
+  --cream:#fffdf5;
+  --ink:#1f2d24;
+  --muted:#6b7d70;
+  --danger:#e15353;
+  --radius:16px;
+  --shadow:0 10px 30px rgba(27,67,50,.12);
+}
+
+*{box-sizing:border-box}
+[hidden]{ display:none !important; }
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 12% 10%, var(--yellow-200) 0, transparent 40%),
+    radial-gradient(circle at 90% 90%, var(--green-100) 0, transparent 45%),
+    var(--cream);
+  color:var(--ink);
+  font-family:'Nunito', Arial, sans-serif;
+}
+
+h1,h2,h3{ font-family:'Baloo 2', 'Nunito', sans-serif; margin:0; }
+
+/* ================================ Landing ================================ */
+
+.landing-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding:48px 24px;
+}
+
+.landing-inner{
+  width:min(1080px, 100%);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:48px;
+  align-items:center;
+}
+
+.landing-copy .brand{ margin-bottom:28px; }
+.landing-headline{
+  font-size:clamp(28px, 4vw, 40px);
+  color:var(--green-900);
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.landing-sub{ color:var(--muted); font-size:16px; line-height:1.6; max-width:480px; margin-bottom:28px; }
+
+.landing-actions{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:32px; }
+.btn-lg{ padding:15px 26px; font-size:15px; }
+
+.landing-features{ list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+.landing-features li{
+  font-weight:700; font-size:14px; color:var(--green-900);
+  background:#fff; border:2px solid var(--green-100); border-radius:12px;
+  padding:10px 14px; width:fit-content;
+}
+
+.landing-media{
+  border-radius:28px; overflow:hidden; box-shadow:var(--shadow);
+  border:4px solid #fff; outline:3px solid var(--yellow-500);
+  aspect-ratio:4/3;
+}
+.landing-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+@media (max-width: 860px){
+  .landing-inner{ grid-template-columns:1fr; }
+  .landing-media{ order:-1; aspect-ratio:16/9; }
+}
+
+/* ============================= Login / Cadastro ============================= */
+
+.auth-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.auth-card{
+  width:min(440px, 100%);
+  background:#fff;
+  border-radius:24px;
+  padding:36px 32px;
+  box-shadow:var(--shadow);
+  border:3px solid var(--yellow-500);
+  position:relative;
+}
+
+.back-link{
+  background:transparent; border:0; color:var(--green-600); font-weight:800;
+  font-size:13px; padding:0; margin-bottom:14px; cursor:pointer;
+}
+.back-link:hover{ text-decoration:underline; }
+
+.brand{ display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+.brand-badge{
+  font-size:34px;
+  background:var(--green-100);
+  border-radius:50%;
+  width:56px; height:56px;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid var(--green-500);
+}
+.brand h1{ font-size:26px; color:var(--green-700); }
+.brand p{ margin:2px 0 0; color:var(--muted); font-size:13px; }
+
+.tabs{ display:flex; gap:8px; margin-bottom:20px; background:var(--green-100); padding:4px; border-radius:12px; }
+.tab-btn{
+  flex:1; border:0; background:transparent; padding:10px; border-radius:10px;
+  font-weight:700; color:var(--green-700); cursor:pointer; font-family:inherit;
+}
+.tab-btn:hover:not(.active){ background:rgba(255,255,255,.6); }
+.tab-btn.active{ background:#fff; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+
+.auth-form{ display:grid; gap:14px; }
+.auth-form label{ display:grid; gap:6px; font-weight:700; font-size:14px; color:var(--green-900); }
+
+input, select{
+  padding:12px 14px;
+  border:2px solid #e3ead9;
+  border-radius:12px;
+  font:inherit;
+  background:#fbfff9;
+  color:var(--ink);
+}
+input:focus, select:focus{ outline:none; border-color:var(--green-500); }
+
+/* Campo de senha com botão de "olho" para mostrar/ocultar */
+.password-field{ position:relative; }
+.password-field input{ width:100%; padding-right:44px; }
+.eye-btn{
+  position:absolute; right:4px; top:50%; transform:translateY(-50%);
+  background:transparent; border:0; font-size:17px; line-height:1;
+  padding:8px; cursor:pointer; border-radius:8px;
+}
+.eye-btn:hover{ background:var(--green-100); }
+.password-field-inline{ flex:1 1 180px; }
+.password-field-inline input{ width:100%; }
+
+button{ font-family:inherit; cursor:pointer; transition:background-color .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .1s ease, filter .15s ease; }
+
+.btn{
+  padding:12px 18px;
+  border-radius:12px;
+  border:0;
+  font-weight:800;
+  letter-spacing:.2px;
+}
+.btn-primary{ background:linear-gradient(135deg, var(--yellow-500), var(--yellow-600)); color:var(--green-900); box-shadow:0 6px 16px rgba(249,168,37,.35); }
+.btn-primary:hover{ filter:brightness(1.06); box-shadow:0 8px 20px rgba(249,168,37,.45); }
+.btn-primary:active{ filter:brightness(.95); transform:translateY(1px); box-shadow:0 3px 10px rgba(249,168,37,.35); }
+
+.btn-secondary{ background:var(--green-100); color:var(--green-700); }
+.btn-secondary:hover{ background:#c3ecd1; }
+.btn-secondary:active{ background:var(--green-500); color:#fff; transform:translateY(1px); }
+
+.btn-ghost{ background:transparent; color:var(--green-700); border:2px solid var(--green-100); }
+.btn-ghost:hover{ background:var(--green-100); border-color:var(--green-500); }
+.btn-ghost:active{ background:var(--green-500); color:#fff; border-color:var(--green-500); transform:translateY(1px); }
+
+.btn-danger-ghost{ background:transparent; color:var(--danger); border:2px solid #f6d5d5; }
+.btn-danger-ghost:hover{ background:#fdecec; border-color:var(--danger); }
+.btn-danger-ghost:active{ background:var(--danger); color:#fff; border-color:var(--danger); transform:translateY(1px); }
+
+.hint{ color:var(--muted); font-size:13px; margin:0 0 6px; }
+.auth-msg{ min-height:20px; margin-top:16px; text-align:center; font-weight:700; color:var(--green-700); }
+.auth-msg.error{ color:var(--danger); }
+
+/* ================================ App shell ================================ */
+
+.app-screen{ min-height:100vh; padding-bottom:40px; }
+
+.app-header{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 24px;
+  background:linear-gradient(135deg, var(--green-700), var(--green-600));
+  color:#fff;
+}
+.app-header .brand{ margin-bottom:0; gap:12px; }
+.app-header .brand-badge{ width:42px; height:42px; font-size:22px; background:rgba(255,255,255,.15); border-color:var(--yellow-500); }
+.app-header .brand h1{ font-size:20px; line-height:1.2; color:#fff; }
+.app-header .brand p{ margin-top:1px; color:var(--yellow-200); font-size:12px; line-height:1.2; }
+
+.user-box{ display:flex; align-items:center; gap:10px; }
+
+.user-info{ display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+.user-name{ font-weight:700; line-height:1; }
+.badge{
+  background:var(--yellow-500); color:var(--green-900); font-weight:800;
+  padding:4px 10px; border-radius:999px; font-size:12px; line-height:1;
+}
+
+/* Ícone de perfil: mesmo tamanho da logo (42px), com uma câmera
+   semitransparente sobreposta ao passar o mouse — padrão comum de troca de
+   foto de perfil. */
+.avatar-btn{
+  position:relative;
+  width:42px; height:42px; flex-shrink:0;
+  border-radius:50%;
+  padding:0; border:2px solid rgba(255,255,255,.55);
+  background:rgba(255,255,255,.15);
+  overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.avatar-btn:hover{ border-color:var(--yellow-500); }
+.avatar-img{ width:100%; height:100%; object-fit:cover; display:block; }
+.avatar-placeholder{ font-size:20px; line-height:1; }
+.avatar-overlay{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(20, 30, 24, .55); color:#fff; font-size:17px;
+  opacity:0; transition:opacity .15s ease;
+}
+.avatar-btn:hover .avatar-overlay,
+.avatar-btn:focus-visible .avatar-overlay{ opacity:1; }
+
+.app-header .btn-ghost{ color:#fff; border-color:rgba(255,255,255,.4); }
+.app-header .btn-ghost:hover{ background:rgba(255,255,255,.18); border-color:#fff; }
+.app-header .btn-ghost:active{ background:rgba(255,255,255,.32); }
+
+.app-nav{
+  display:flex; gap:8px; padding:14px 28px; flex-wrap:wrap;
+  background:#fff; border-bottom:3px solid var(--yellow-200);
+}
+.nav-btn{
+  border:2px solid var(--green-100); background:#fff; color:var(--green-700);
+  padding:10px 16px; border-radius:999px; font-weight:800; font-size:14px;
+}
+.nav-btn:hover:not(.active){ background:var(--green-100); border-color:var(--green-500); }
+.nav-btn:active{ transform:scale(.97); }
+.nav-btn.active{ background:var(--green-600); color:#fff; border-color:var(--green-600); }
+
+.app-main{ max-width:960px; margin:24px auto; padding:0 20px; }
+
+.view{ display:none; background:#fff; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow); }
+.view.active{ display:block; }
+
+.view-header{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:16px; }
+.view-header h2{ color:var(--green-700); }
+
+.filter-row{ margin-bottom:14px; }
+.filter-row label{ display:flex; flex-direction:column; gap:6px; font-weight:700; font-size:13px; color:var(--green-900); max-width:340px; }
+.filter-row select{ padding:12px 14px; }
+
+.form-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.form-row input[type="text"], .form-row input:not([type]), .form-row input[type="email"]{ flex:2 1 200px; }
+.form-row input[type="password"]{ flex:1 1 180px; }
+.form-row select{ flex:1 1 150px; }
+.form-row input[type="file"]{ flex:1 1 180px; }
+.form-row button{ flex:0 0 auto; }
+
+/* Campo de texto "principal" (nome/busca) — maior e mais confortável para
+   digitar, em contraste com selects/checkboxes menores ao lado. */
+.field-lg{
+  padding:13px 16px;
+  font-size:15px;
+  border-radius:12px;
+  flex:2 1 240px;
+}
+
+/* Barra de ferramentas do navegador de pastas: busca + botão de zip */
+.browser-toolbar{ display:flex; gap:12px; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
+.browser-toolbar button{ flex:0 0 auto; white-space:nowrap; }
+
+/* Breadcrumb + botão de editar a pasta atual, na mesma linha */
+.browser-crumb-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+.browser-crumb-row .breadcrumb{ margin-bottom:0; flex:1; }
+
+/* Cabeçalho de seção (ex.: "Subpastas" / "Arquivos nesta pasta") com um
+   botão de ação alinhado à direita, no lugar de formulários sempre abertos. */
+.section-header-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+.section-header-row h3{ color:var(--green-900); }
+
+.btn-sm{ padding:8px 14px; font-size:13px; }
+
+.list{ display:grid; gap:10px; margin-top:8px; }
+.list-item{
+  display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+  padding:14px 16px; border-radius:14px; background:#f2faf3; border:2px solid var(--green-100);
+}
+.list-item strong{ display:block; color:var(--green-900); }
+.list-item small{ color:var(--muted); }
+.list-item .actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+.list-item-pending{ background:var(--yellow-200); border-color:var(--yellow-500); }
+.list-item-pending small{ color:var(--green-900); font-weight:700; }
+
+.badge-role{
+  font-size:12px; font-weight:800; color:var(--green-700);
+  background:var(--green-100); border-radius:999px; padding:6px 12px;
+}
+
+.badge-reset-request{
+  display:inline-block; margin-top:4px;
+  font-size:11px; font-weight:800; color:#8a5a00;
+  background:var(--yellow-500); border-radius:999px; padding:4px 10px;
+}
+
+/* Link de texto simples (ex.: "Esqueci minha senha") */
+.link-btn{
+  background:transparent; border:0; padding:0; margin-top:2px;
+  color:var(--green-600); font-weight:700; font-size:13px;
+  text-align:center; cursor:pointer; justify-self:center;
+}
+.link-btn:hover{ color:var(--green-700); text-decoration:underline; }
+
+/* ================================= Logs ================================== */
+
+.log-export{ display:flex; gap:8px; flex-wrap:wrap; }
+
+.log-filters{
+  display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+  margin-bottom:14px; padding:12px; background:#f7fbf7;
+  border:2px solid var(--green-100); border-radius:14px;
+}
+.log-filters select{ flex:0 1 180px; padding:9px 12px; font-size:13px; }
+.log-filters input[type="date"]{ flex:0 1 150px; padding:9px 12px; font-size:13px; }
+.log-filters .field-lg{ flex:2 1 220px; padding:9px 14px; font-size:13px; }
+.log-filters button{ flex:0 0 auto; padding:9px 14px; font-size:13px; }
+
+/* Tiles bem mais compactos que os de pastas/documentos: uma linha só. */
+.log-list{ gap:6px; }
+.log-item{
+  display:grid;
+  grid-template-columns:2fr 1fr auto;
+  gap:10px;
+  align-items:center;
+  padding:9px 14px;
+  font-size:13px;
+}
+.log-action{ font-weight:800; color:var(--green-900); display:flex; flex-direction:column; gap:1px; }
+.log-detail{ font-weight:600; color:var(--muted); font-size:12px; }
+.log-actor{ color:var(--green-700); font-weight:700; }
+.log-date{ color:var(--muted); font-size:12px; text-align:right; white-space:nowrap; }
+
+@media (max-width: 700px){
+  .log-item{ grid-template-columns:1fr; row-gap:4px; }
+  .log-date{ text-align:left; }
+}
+
+.empty{ color:var(--muted); text-align:center; padding:20px 0; }
+
+/* ============================== Documentos ============================== */
+
+.doc-main{ display:flex; align-items:center; gap:12px; }
+.doc-icon{ font-size:24px; line-height:1; flex-shrink:0; }
+.ext-badge{
+  display:inline-block; font-size:10px; font-weight:800; letter-spacing:.3px;
+  color:var(--muted); background:var(--green-100); border-radius:6px;
+  padding:1px 6px; margin-left:6px; vertical-align:middle;
+}
+
+/* ============================== Breadcrumb ============================== */
+
+.breadcrumb{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+.crumb{
+  background:var(--green-100); color:var(--green-700); border:0; border-radius:8px;
+  padding:6px 10px; font-weight:700; font-size:13px;
+}
+.crumb:hover{ background:#c3ecd1; }
+.crumb:active{ transform:scale(.96); }
+.crumb:last-child{ background:var(--green-600); color:#fff; }
+.crumb:last-child:hover{ background:var(--green-700); }
+.crumb-sep{ color:var(--muted); }
+
+/* ================================ Pastas ================================= */
+
+.folder-item{ cursor:pointer; transition:box-shadow .15s ease, transform .15s ease; }
+.folder-item:hover{ box-shadow:0 4px 14px rgba(27,67,50,.12); transform:translateY(-1px); }
+
+/* Opções de visibilidade dentro dos modais: linhas completas com checkbox
+   bem visível — mais claras e à prova de sobreposição em telas estreitas do
+   que os "chips" compactos usados antes. */
+.visibility-box{ display:flex; flex-direction:column; gap:8px; }
+
+.visibility-option{
+  display:flex; align-items:center; gap:10px;
+  padding:11px 14px; border-radius:12px;
+  background:#f7fbf7; border:2px solid var(--green-100);
+  font-size:13px; font-weight:700; color:var(--green-900);
+  cursor:pointer; user-select:none;
+  transition:background-color .15s ease, border-color .15s ease;
+}
+.visibility-option input{ width:18px; height:18px; margin:0; accent-color:var(--green-600); flex-shrink:0; }
+.visibility-option:hover{ border-color:var(--green-500); }
+.visibility-option:has(input:checked){ background:var(--green-100); border-color:var(--green-500); }
+
+hr{ border:0; border-top:2px dashed var(--yellow-200); margin:26px 0; }
+
+.app-msg{ position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  background:var(--green-700); color:#fff; padding:10px 20px; border-radius:999px;
+  font-weight:700; box-shadow:var(--shadow); z-index:10001; }
+.app-msg:empty{ display:none; }
+.app-msg.error{ background:var(--danger); }
+
+/* ================================= Modal ================================= */
+
+body.modal-open{ overflow:hidden; }
+
+.modal-overlay{
+  position:fixed; inset:0; z-index:10000;
+  background:rgba(20, 30, 24, .5);
+  display:flex; align-items:center; justify-content:center;
+  padding:20px;
+  animation:modal-fade .15s ease;
+}
+@keyframes modal-fade{ from{ opacity:0; } to{ opacity:1; } }
+
+.modal-box{
+  position:relative;
+  width:min(460px, 100%);
+  max-height:90vh; overflow-y:auto;
+  background:#fff; border-radius:22px;
+  padding:28px 26px;
+  box-shadow:0 24px 60px rgba(0,0,0,.28);
+  border:3px solid var(--yellow-500);
+  animation:modal-pop .18s ease;
+}
+@keyframes modal-pop{ from{ opacity:0; transform:translateY(10px) scale(.97); } to{ opacity:1; transform:none; } }
+
+.modal-close{
+  position:absolute; top:14px; right:14px;
+  width:32px; height:32px; border-radius:50%;
+  background:var(--green-100); border:0; color:var(--green-700);
+  font-size:15px; font-weight:800; cursor:pointer;
+}
+.modal-close:hover{ background:var(--green-500); color:#fff; }
+
+.modal-box h3{ color:var(--green-700); margin-bottom:18px; padding-right:30px; }
+
+.modal-form{ display:grid; gap:16px; }
+.modal-form label{ display:grid; gap:6px; font-weight:700; font-size:14px; color:var(--green-900); }
+.modal-form .visibility-box{ margin-top:-4px; }
+
+.modal-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:4px; }
+
+.username-reveal{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  background:var(--green-100); border:2px dashed var(--green-500);
+  border-radius:14px; padding:14px 16px; margin:4px 0 16px;
+}
+.username-reveal span{
+  font-family:'Courier New', monospace; font-size:18px; font-weight:800;
+  color:var(--green-900); word-break:break-all;
+}
+
+@media (max-width: 600px){
+  .app-header{ flex-direction:column; gap:12px; align-items:flex-start; }
+  .app-main{ padding:0 12px; }
+}

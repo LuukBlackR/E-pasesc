@@ -1,0 +1,11 @@
+# Normaliza quebras de linha para LF em todo o repositório. Sem isso, no
+# Windows o Git pode salvar arquivos com CRLF — o que quebra a execução do
+# docker-entrypoint.sh dentro do container Linux (erro "bad interpreter").
+* text=auto eol=lf
+*.sh text eol=lf
+
+# Binários: nunca normalizar quebras de linha nem tentar diff em texto.
+*.png binary
+*.ico binary
+*.jpg binary
+*.jpeg binary
